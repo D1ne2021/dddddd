@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <StartupObject>fnbot.shop.App</StartupObject>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishTrimmed>true</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="fnbot.shop.Backend\**" />
+    <Compile Remove="fnbot.shop.Fortnite\**" />
+    <Compile Remove="fnbot.shop.ItemShop\**" />
+    <Compile Remove="fnbot.shop.TestModule\**" />
+    <Compile Remove="fnbot.shop.Twitter\**" />
+    <Compile Remove="fnbot.shop.Video\**" />
+    <Compile Remove="fnbot.shop.Web\**" />
+    <Compile Remove="Plugins\**" />
+    <EmbeddedResource Remove="fnbot.shop.Backend\**" />
+    <EmbeddedResource Remove="fnbot.shop.Fortnite\**" />
+    <EmbeddedResource Remove="fnbot.shop.ItemShop\**" />
+    <EmbeddedResource Remove="fnbot.shop.TestModule\**" />
+    <EmbeddedResource Remove="fnbot.shop.Twitter\**" />
+    <EmbeddedResource Remove="fnbot.shop.Video\**" />
+    <EmbeddedResource Remove="fnbot.shop.Web\**" />
+    <EmbeddedResource Remove="Plugins\**" />
+    <None Remove="fnbot.shop.Backend\**" />
+    <None Remove="fnbot.shop.Fortnite\**" />
+    <None Remove="fnbot.shop.ItemShop\**" />
+    <None Remove="fnbot.shop.TestModule\**" />
+    <None Remove="fnbot.shop.Twitter\**" />
+    <None Remove="fnbot.shop.Video\**" />
+    <None Remove="fnbot.shop.Web\**" />
+    <None Remove="Plugins\**" />
+    <Page Remove="fnbot.shop.Backend\**" />
+    <Page Remove="fnbot.shop.Fortnite\**" />
+    <Page Remove="fnbot.shop.ItemShop\**" />
+    <Page Remove="fnbot.shop.TestModule\**" />
+    <Page Remove="fnbot.shop.Twitter\**" />
+    <Page Remove="fnbot.shop.Video\**" />
+    <Page Remove="fnbot.shop.Web\**" />
+    <Page Remove="Plugins\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.7.0" />
+    <PackageReference Include="Sentry" Version="2.0.0-beta6" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="WPFFolderBrowser" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="fnbot.shop.Backend\fnbot.shop.Backend.csproj" />
+    <ProjectReference Include="fnbot.shop.Fortnite\fnbot.shop.Fortnite.csproj" />
+    <ProjectReference Include="fnbot.shop.Video\fnbot.shop.Video.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\fa5s.otf" />
+    <Resource Include="Resources\icon.png" />
+  </ItemGroup>
+
+</Project>

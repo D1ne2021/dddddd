@@ -1,0 +1,7 @@
+﻿{
+  "name": "Item Shop",
+  "version": "0.1",
+  "guid": "bdd26eab-483d-4ef4-aeef-7b315615ac1f",
+  "type": "MODULE",
+  "main": "fnbot.shop.ItemShop.Module"
+}

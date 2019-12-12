@@ -1,0 +1,7 @@
+﻿{
+  "name": "Twitter",
+  "version": "1.0",
+  "guid": "042264a3-bee9-4057-a75f-9b9f74a32bb7",
+  "type": "PLATFORM",
+  "main": "fnbot.shop.Twitter.Platform"
+}

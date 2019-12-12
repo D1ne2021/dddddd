@@ -1,0 +1,7 @@
+﻿{
+	"name": "Purchase Stats",
+	"version": "1.0",
+	"guid": "462405b8-dbaa-4b10-953a-2f42216b5a1c",
+	"type": "MODULE",
+	"main": "fnbot.shop.TestPlatform.Module"
+}
