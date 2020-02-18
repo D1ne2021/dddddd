@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fnbot.shop"
         mc:Ignorable="d"
-        Title="fnbot.shop" Height="450" Width="800" Closing="WindowClosing">
+        Title="fnbot.shop" Height="450" Width="950" Closing="WindowClosing">
     <Grid>
         <Menu Width="Auto" Height="18" Margin="0,0,0,0" VerticalAlignment="Top">
             <MenuItem Header="_Help">
@@ -22,6 +22,13 @@
             <TabControl SelectionChanged="TabControl_SelectionChanged">
                 <TabItem Header="Modules">
                     <DataGrid x:Name="ModulesGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" HeadersVisibility="Column" GridLinesVisibility="Vertical" VerticalGridLinesBrush="LightGray" SelectionMode="Extended" IsReadOnly="True" HorizontalScrollBarVisibility="Disabled">
+                        <DataGrid.ItemContainerStyle>
+                            <Style TargetType="DataGridRow">
+                                <EventSetter Event="Unselected" Handler="UnselectedModule"/>
+                                <EventSetter Event="Selected" Handler="SelectedModule"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="EditModulePosts"/>
+                            </Style>
+                        </DataGrid.ItemContainerStyle>
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="24">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -38,32 +45,19 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="120"/>
-                            <DataGridTextColumn x:Name="ModulesSupportsCol" FontSize="14" Binding="{Binding Supports}" Header="Supports" Width="105">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Version}" Header="Version" Width="90"/>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="110"/>
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="150"/>
+                            <DataGridTextColumn Binding="{Binding Size}" Header="Size" Width="75"/>
+                            <DataGridTextColumn Binding="{Binding Version}" Header="Version" Width="50"/>
                         </DataGrid.Columns>
-                        <DataGrid.ItemContainerStyle>
-                            <Style TargetType="DataGridRow">
-                                <EventSetter Event="Unselected" Handler="Unselected"/>
-                                <EventSetter Event="Selected" Handler="Selected"/>
-                                <EventSetter Event="MouseDoubleClick" Handler="EditModulePosts"/>
-                            </Style>
-                        </DataGrid.ItemContainerStyle>
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Platforms">
                     <DataGrid x:Name="PlatformsGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" HeadersVisibility="Column" GridLinesVisibility="Vertical" VerticalGridLinesBrush="LightGray" SelectionMode="Extended" IsReadOnly="True" HorizontalScrollBarVisibility="Disabled">
                         <DataGrid.ItemContainerStyle>
                             <Style TargetType="DataGridRow">
-                                <EventSetter Event="Unselected" Handler="Unselected"/>
-                                <EventSetter Event="Selected" Handler="Selected"/>
+                                <EventSetter Event="Unselected" Handler="UnselectedPlatform"/>
+                                <EventSetter Event="Selected" Handler="SelectedPlatform"/>
                             </Style>
                         </DataGrid.ItemContainerStyle>
                         <DataGrid.Columns>

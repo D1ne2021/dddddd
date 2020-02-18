@@ -1,6 +1,6 @@
 ﻿namespace fnbot.shop.Backend
 {
-    public enum PostResponse
+    public enum PostResponse : byte
     {
         SUCCESS,
         UNAUTHORIZED,
@@ -8,6 +8,7 @@
         SERVER_ERROR,
         UNSUPPORTED_TYPE,
         UNSUPPORTED_CONSTRAINTS,
-        UNKNOWN
+
+        UNKNOWN = 0xFF
     }
 }

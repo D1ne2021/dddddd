@@ -1,15 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using fnbot.shop.Backend.ItemTypes;
 
 namespace fnbot.shop.Backend
 {
-    public interface IModule : IImport, IDisposable
+    public interface IModule : IPlugin
     {
         int RefreshTime { get; }
 
         Task<IItem> Post(bool force);
-
-        bool PostsType(ItemType type);
     }
 }

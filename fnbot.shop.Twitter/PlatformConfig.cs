@@ -13,20 +13,20 @@ namespace fnbot.shop.Twitter
     {
         private string PINSecret;
         private string PINToken;
-        public readonly ConfigProperty<Func<IImport,Task>> AuthPin;
+        public readonly ConfigProperty<Func<IPlugin,Task>> AuthPin;
         public readonly ConfigProperty<string> TwitterPin;
-        public readonly ConfigProperty<Func<IImport, Task>> SubmitPin;
-        public readonly ConfigProperty<Action<IImport>> Logout;
+        public readonly ConfigProperty<Func<IPlugin, Task>> SubmitPin;
+        public readonly ConfigProperty<Action<IPlugin>> Logout;
         public readonly ConfigProperty<StringLabel> AuthStatus;
         public PlatformConfig()
         {
-            AuthPin = new ConfigProperty<Func<IImport, Task>>(AuthPinF, "(1) Authorize with PIN", true, true);
+            AuthPin = new ConfigProperty<Func<IPlugin, Task>>(AuthPinF, "(1) Authorize with PIN", true, true);
             TwitterPin = new ConfigProperty<string>(null, "(2) Enter PIN from Twitter", false, false);
-            SubmitPin = new ConfigProperty<Func<IImport, Task>>(SubmitPinF, "(3) Submit PIN", false, false);
-            Logout = new ConfigProperty<Action<IImport>>(LogoutF, "Log Out", true, false);
+            SubmitPin = new ConfigProperty<Func<IPlugin, Task>>(SubmitPinF, "(3) Submit PIN", false, false);
+            Logout = new ConfigProperty<Action<IPlugin>>(LogoutF, "Log Out", true, false);
             AuthStatus = new ConfigProperty<StringLabel>("Not Logged In", "Status", false, true);
         }
-        public async Task AuthPinF(IImport import)
+        public async Task AuthPinF(IPlugin import)
         {
             AuthPin.Enabled = false;
             _ = Task.Delay(5000).ContinueWith(t => AuthPin.Enabled = true);
@@ -62,7 +62,7 @@ namespace fnbot.shop.Twitter
         internal string OAuthToken;
         internal string OAuthSecret;
         string ScreenName;
-        public async Task SubmitPinF(IImport import)
+        public async Task SubmitPinF(IPlugin import)
         {
             SubmitPin.Enabled = TwitterPin.Enabled = false;
             _ = Task.Delay(5000).ContinueWith(t => SubmitPin.Enabled = TwitterPin.Enabled = true);
@@ -85,7 +85,7 @@ namespace fnbot.shop.Twitter
             PINToken = null;
         }
 
-        public void LogoutF(IImport import)
+        public void LogoutF(IPlugin import)
         {
             OAuthToken = OAuthSecret = null;
             AuthStatus.Value = "Not Logged In";

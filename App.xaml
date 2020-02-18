@@ -12,7 +12,6 @@
         <Style TargetType="local:ModulePostTo" BasedOn="{StaticResource {x:Type Window}}"/>
         <Style TargetType="local:About" BasedOn="{StaticResource {x:Type Window}}"/>
         <Style TargetType="local:Changelog" BasedOn="{StaticResource {x:Type Window}}"/>
-        <Style TargetType="local:Setup" BasedOn="{StaticResource {x:Type Window}}"/>
 
         <Style TargetType="TabControl">
             <Setter Property="Background" Value="#303030"/>

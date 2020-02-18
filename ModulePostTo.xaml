@@ -33,14 +33,8 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="120"/>
-                <DataGridTextColumn x:Name="SupportsCol" FontSize="14" Binding="{Binding Supports}" Header="Supports" Width="105">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="180"/>
+                <DataGridTextColumn Binding="{Binding Size}" Header="Size" Width="90"/>
                 <DataGridTextColumn Binding="{Binding Version}" Header="Version" Width="90"/>
             </DataGrid.Columns>
         </DataGrid>

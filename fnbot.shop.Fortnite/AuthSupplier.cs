@@ -33,8 +33,8 @@ namespace fnbot.shop.Fortnite
         static string Username;
         static string Password;
 
-        static string AccessToken;
-        static string RefreshToken;
+        public static string AccessToken { get; private set; }
+        public static string RefreshToken { get; private set; }
 
         public static long Expires;
         public static bool Expired => Expires < DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -90,12 +90,23 @@ namespace fnbot.shop.Fortnite
                 await client.SendAsync("HEAD", "https://www.epicgames.com/id/api/csrf", false);
                 client.SetHeader("x-xsrf-token", client.Cookies.GetCookies(new Uri("https://www.epicgames.com/id/api/csrf"))["XSRF-TOKEN"].Value);
 
-                await client.SendFormAsync("POST", "https://www.epicgames.com/id/api/login", new Dictionary<string, string>
                 {
-                    { "email", Username },
-                    { "password", Password },
-                    { "rememberMe", "true" }
-                }, false).ConfigureAwait(false);
+                    var rs = await client.SendFormAsync("POST", "https://www.epicgames.com/id/api/login", new Dictionary<string, string>
+                    {
+                        { "email", Username },
+                        { "password", Password },
+                        { "rememberMe", "true" }
+                    }, false).ConfigureAwait(false);
+                    if (rs.StatusCode == HttpStatusCode.Conflict)
+                    {
+                        await client.SendFormAsync("POST", "https://www.epicgames.com/id/api/login", new Dictionary<string, string>
+                        {
+                            { "email", Username },
+                            { "password", Password },
+                            { "rememberMe", "true" }
+                        }, false).ConfigureAwait(false);
+                    }
+                }
 
                 var exchange_resp = await JsonSerializer.DeserializeAsync<ExchangeResp>((await client.SendAsync("GET", "https://www.epicgames.com/id/api/exchange")).Stream);
 
@@ -195,8 +206,6 @@ namespace fnbot.shop.Fortnite
                 StorefrontSerializer.Converters.Add(new JsonStringEnumConverter());
             }
             await RefreshIfInvalidAsync();
-            //var inp = File.ReadAllText(@"C:\Users\Aleks\Desktop\testsgdfg.json");
-            //return JsonSerializer.Deserialize<Storefront>(inp, StorefrontSerializer);
             return await JsonSerializer.DeserializeAsync<Storefront>((await Client.SendAsync("GET", FORTNITE_STOREFRONT_ENDPOINT)).Stream, StorefrontSerializer);
         }
 

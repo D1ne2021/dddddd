@@ -29,5 +29,11 @@ namespace fnbot.shop.Web
             length = stream.Length;
             return true;
         }
+
+        public new void Dispose()
+        {
+            stream.Dispose();
+            base.Dispose();
+        }
     }
 }

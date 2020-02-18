@@ -9,8 +9,8 @@ namespace fnbot.shop
     public sealed class UpdateChecker : IDisposable
     {
         public const Channel CHANNEL = Channel.PUBLIC;
-        public const int BUILD = 0;
-        public const string VERSION = "6.9";
+        public const int BUILD = 1;
+        public const string VERSION = "dev-1";
         public const string PATCHNOTES = "0666a685-80f2-4b68-80a3-6b7b79e7097c";
 
         int UpdateInterval = 1000 * 60 * 60 * 6; // 6 hours

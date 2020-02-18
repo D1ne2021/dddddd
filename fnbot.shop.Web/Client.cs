@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -42,48 +43,43 @@ namespace fnbot.shop.Web
             }
         }
 
-        public async Task<Response> SendAsync(string method, string uri, bool addBody = true)
+        public async Task<Response> SendAsync(string method, string uri, IReadOnlyDictionary<string, string> reqHeaders = null, bool addBody = true)
         {
             using (var req = new HttpRequestMessage(GetMethod(method), uri))
             {
-                var response = await HttpClient.SendAsync(req).ConfigureAwait(false);
-
-                var headers = response.Headers.ToDictionary(x => x.Key, x => x.Value.FirstOrDefault(), StringComparer.OrdinalIgnoreCase);
-                var stream = addBody ? await response.Content.ReadAsStreamAsync().ConfigureAwait(false) : null;
-
-                return new Response(response.StatusCode, headers, stream, response);
+                return await SendInternalAsync(req, reqHeaders, addBody).ConfigureAwait(false);
             }
         }
-        public async Task<Response> SendJsonAsync(string method, string uri, string json, bool addBody = true)
+        public async Task<Response> SendJsonAsync(string method, string uri, string json, IReadOnlyDictionary<string, string> reqHeaders = null, bool addBody = true)
         {
             using (var req = new HttpRequestMessage(GetMethod(method), uri))
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
                 req.Content = content;
-                return await SendInternalAsync(req, addBody).ConfigureAwait(false);
+                return await SendInternalAsync(req, reqHeaders, addBody).ConfigureAwait(false);
             }
         }
-        public async Task<Response> SendContentAsync(string method, string uri, HttpContent content, bool addBody = true)
+        public async Task<Response> SendContentAsync(string method, string uri, HttpContent content, IReadOnlyDictionary<string, string> reqHeaders = null, bool addBody = true)
         {
             using (var req = new HttpRequestMessage(GetMethod(method), uri))
             using (content)
             {
                 req.Content = content;
-                return await SendInternalAsync(req, addBody).ConfigureAwait(false);
+                return await SendInternalAsync(req, reqHeaders, addBody).ConfigureAwait(false);
             }
         }
 
-        public async Task<Response> SendFormAsync(string method, string uri, IReadOnlyDictionary<string, string> formParams, bool addBody = true)
+        public async Task<Response> SendFormAsync(string method, string uri, IReadOnlyDictionary<string, string> formParams, IReadOnlyDictionary<string, string> reqHeaders = null, bool addBody = true)
         {
             using (var req = new HttpRequestMessage(GetMethod(method), uri))
             using (var content = new FormUrlEncodedContent(formParams))
             {
                 req.Content = content;
-                return await SendInternalAsync(req, addBody).ConfigureAwait(false);
+                return await SendInternalAsync(req, reqHeaders, addBody).ConfigureAwait(false);
             }
         }
 
-        public async Task<Response> SendMultipartAsync(string method, string uri, IReadOnlyDictionary<string, object> multipartParams, bool addBody = true)
+        public async Task<Response> SendMultipartAsync(string method, string uri, IReadOnlyDictionary<string, object> multipartParams, IReadOnlyDictionary<string, string> reqHeaders = null, bool addBody = true)
         {
             using (var req = new HttpRequestMessage(GetMethod(method), uri))
             using (var content = new MultipartFormDataContent("Upload----" + DateTime.Now.ToBinary()))
@@ -112,12 +108,25 @@ namespace fnbot.shop.Web
                     }
                 }
                 req.Content = content;
-                return await SendInternalAsync(req, addBody).ConfigureAwait(false);
+                return await SendInternalAsync(req, reqHeaders, addBody).ConfigureAwait(false);
             }
         }
 
-        private async Task<Response> SendInternalAsync(HttpRequestMessage request, bool addBody = true)
+        public async Task<string> GetAsync(string uri, IReadOnlyDictionary<string, string> reqHeaders = null) =>
+            await (await SendAsync("GET", uri, reqHeaders)).GetStringAsync();
+
+        private async Task<Response> SendInternalAsync(HttpRequestMessage request, IReadOnlyDictionary<string, string> reqHeaders = null, bool addBody = true)
         {
+            if (reqHeaders != null)
+            {
+                foreach(var kv in reqHeaders)
+                {
+                    if (request.Headers.TryAddWithoutValidation(kv.Key, kv.Value))
+                    {
+                        throw new WarningException($"Could not add {kv.Key} - {kv.Value} as header");
+                    }
+                }
+            }
             var response = await HttpClient.SendAsync(request).ConfigureAwait(false);
 
             var headers = response.Headers.ToDictionary(x => x.Key, x => x.Value.FirstOrDefault(), StringComparer.OrdinalIgnoreCase);
